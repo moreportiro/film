@@ -7,10 +7,10 @@ export function Layout() {
   const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-black text-black dark:text-white px-6 py-5">
+    <div className="min-h-screen w-full bg-white dark:bg-[#212121] text-black dark:text-white px-6 py-5">
       {!isHomePage && (
-        <header className="mb-10 flex items-center justify-between">
-          <Link to="/">Лого</Link>
+        <header className="mb-10 flex items-center justify-between font-extrabold">
+          <Link to="/">На главную</Link>
         </header>
       )}
       <Outlet />
