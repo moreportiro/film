@@ -13,12 +13,11 @@ export function Modal({ children, onClose }) {
   }, [onClose]);
 
   return createPortal(
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center">
-      <div className="relative w-[78%] max-w-xl bg-neutral-900 text-white p-6 rounded-2xl shadow-lg animate-fadeIn">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+      <div className="relative bg-white dark:bg-[#212121] text-black dark:text-white rounded-2xl animate-fadeIn p-5">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-white text-xl hover:text-red-600 transition"
-          aria-label="Close modal"
+          className="absolute top-1 right-2 text-black dark:text-white hover:text-fuchsia-900 transition"
         >
           x
         </button>

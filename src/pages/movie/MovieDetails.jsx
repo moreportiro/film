@@ -1,6 +1,7 @@
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MOVIES } from "../home/movies.data";
+import { fetchJSONP } from "../../services/fetchJSONP";
 
 // lazy - ленивая загрузка компонентов, загружаются только когда нужны
 const LazyMovieComments = lazy(() =>
@@ -9,13 +10,45 @@ const LazyMovieComments = lazy(() =>
 
 export function MovieDetails() {
   const { id } = useParams();
+  const [moviesData, setMoviesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        const url =
+          "https://script.google.com/macros/s/AKfycbxoG96rnSRxfg4rOuBzXGXpMYaWaJYfpZSifG9hgrLWnXFfcQ7FkPuxQ7Rjg6fukSwU/exec";
+        const data = await fetchJSONP(url, "handleMoviesData", 3); // 3 попытки
+        setMoviesData(data);
+      } catch (error) {
+        console.error("Ошибка загрузки данных:", error);
+        setMoviesData(MOVIES); // Используем локальные данные в случае ошибки
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMovies();
+  }, []);
 
   const movie = useMemo(() => {
-    return MOVIES.find((movie) => movie.trailerId === id);
-  }, [id]);
+    return moviesData.find((movie) => movie.trailerId === id);
+  }, [id, moviesData]);
 
+  if (loading) {
+    return <div>Загрузка данных...</div>;
+  }
+  if (error) {
+    return (
+      <div>
+        <p>Ошибка загрузки: {error}</p>
+        <p>Используются локальные данные</p>
+      </div>
+    );
+  }
   if (!movie) {
-    return <p>Не найдено</p>;
+    return <p>Фильм не найден</p>;
   }
 
   return (

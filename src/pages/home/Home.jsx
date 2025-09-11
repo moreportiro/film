@@ -1,29 +1,59 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MOVIES } from "./movies.data";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useTheme } from "../../hooks/useTheme";
 import MovieCard from "./MovieCard";
+import { AdminPanel } from "../../components/AdminPanel";
+import { Modal } from "../../components/Modal";
+import { fetchJSONP } from "../../services/fetchJSONP";
 
 export function Home() {
   const { theme, toggleTheme } = useTheme();
   const [searhTerm, setSearchTerm] = useState("");
+  const [moviesData, setMoviesData] = useState([MOVIES]);
+  const [loading, setLoading] = useState(true);
   const debouncedSearch = useDebounce(searhTerm, 500);
+  const [isAdmin, setAdmin] = useState();
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // загрузка данных после добавления фильма
+  const refreshMovies = async () => {
+    try {
+      setLoading(true);
+      const url =
+        "https://script.google.com/macros/s/AKfycbxoG96rnSRxfg4rOuBzXGXpMYaWaJYfpZSifG9hgrLWnXFfcQ7FkPuxQ7Rjg6fukSwU/exec";
+      const data = await fetchJSONP(url, "handleMoviesData");
+      setMoviesData(data);
+    } catch (error) {
+      console.error("Ошибка загрузки данных:", error);
+      setMoviesData(MOVIES);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    refreshMovies();
+  }, [refreshTrigger]);
 
   // useMemo убирает лишние перерисовки(оптимизация)
   const movies = useMemo(() => {
-    return MOVIES.filter((movie) =>
-      movie.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+    return moviesData.filter(
+      (movie) =>
+        movie.name &&
+        movie.name.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
-  }, [debouncedSearch]);
+  }, [debouncedSearch, moviesData]);
 
   // группировка фильмов по платформам
   const moviesByPlatform = useMemo(() => {
     const grouped = {};
     movies.forEach((movie) => {
-      if (!grouped[movie.platform]) {
-        grouped[movie.platform] = [];
+      if (movie.platform) {
+        if (!grouped[movie.platform]) {
+          grouped[movie.platform] = [];
+        }
+        grouped[movie.platform].push(movie);
       }
-      grouped[movie.platform].push(movie);
     });
     // сортировка фильмов по алфавиту
     Object.keys(grouped).forEach((platform) => {
@@ -37,10 +67,13 @@ export function Home() {
     () => Object.keys(moviesByPlatform).sort((a, b) => a.localeCompare(b)),
     [moviesByPlatform]
   );
+  if (loading) {
+    return <div>Загрузка данных...</div>;
+  }
 
   return (
     <div>
-      {/* поиск */}
+      {/* поиск (надо вынести+фильтр) */}
       <div className="flex justify-center items-center">
         <input
           type="search"
@@ -51,10 +84,28 @@ export function Home() {
           placeholder="Поиск..."
         />
       </div>
+      {/* смена темы */}
       <div className="flex justify-end items-center">
-        {/* смена темы */}
         <button onClick={toggleTheme} className="btn">
           {theme === "dark" ? "🌑" : "☀️"}
+        </button>
+      </div>
+      {/* админ панель */}
+      <div>
+        {isAdmin && (
+          <Modal onClose={() => setAdmin(false)}>
+            <AdminPanel
+              onSuccess={() => setRefreshTrigger((prev) => prev + 1)}
+            />
+          </Modal>
+        )}
+        <button
+          className="btn2"
+          onClick={() => {
+            setAdmin(true);
+          }}
+        >
+          +
         </button>
       </div>
       {/* вывод платформ с их фильмами */}
@@ -67,11 +118,7 @@ export function Home() {
           {/* фильмы текущей платформы */}
           <div className="flex justify-center gap-6">
             {moviesByPlatform[platform].map((movie) => (
-              <MovieCard
-                key={movie.name}
-                image={movie.image}
-                trailerId={movie.trailerId}
-              />
+              <MovieCard key={movie.name || Math.random()} movie={movie} />
             ))}
           </div>
         </div>
