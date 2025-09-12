@@ -14,70 +14,62 @@ export function MovieComments({
   rating2,
   kinopoisk,
 }) {
+  const isCompleted = continuation === "Завершён";
+
   return (
     <div>
       <p className="flex ml-10 text-4xl font-extrabold">{name}</p>
       <p className="flex ml-10 text-gray-400 font-mono">{nameorig}</p>
       <p className="flex m-10 text-2xl font-extrabold">О сериале</p>
-      <div className="flex">
-        <div>
-          <ul className="space-y-4 ml-10 text-gray-400">
-            <li>
-              <p>Сезон</p>
-            </li>
-            <li>
-              <p>Серия</p>
-            </li>
-            <li>
-              <p>Страна</p>
-            </li>
-            <li>
-              <p>Жанр</p>
-            </li>
-            <li>
-              <p>Год производства</p>
-            </li>
-            <li>
-              <p>Год завершения</p>
-            </li>
-            <li>
-              <p>Платформа</p>
-            </li>
-            <li>
-              <p>Статус</p>
-            </li>
-          </ul>
+      <div className="flex max-w-5xl">
+        <div className="flex-1">
+          <div className="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-4 ml-10">
+            <div className="text-gray-400">Сезон</div>
+            <div>{season}</div>
+
+            <div className="text-gray-400">Серия</div>
+            <div>{episode}</div>
+
+            <div className="text-gray-400">Страна</div>
+            <div className="flex flex-wrap gap-1">
+              {country.split(", ").map((c, idx) => (
+                <span key={idx} className="bg-gray-400 p-1 rounded-md">
+                  {c}
+                </span>
+              ))}
+            </div>
+
+            <div className="text-gray-400">Жанр</div>
+            <div className="flex flex-wrap gap-1">
+              {style.split(", ").map((g, idx) => (
+                <span key={idx} className="bg-gray-400 p-1 rounded-md">
+                  {g}
+                </span>
+              ))}
+            </div>
+
+            <div className="text-gray-400">Год производства</div>
+            <div>{yers}</div>
+
+            {isCompleted && (
+              <>
+                <div className="text-gray-400">Год завершения</div>
+                <div>{yers2}</div>
+              </>
+            )}
+
+            <div className="text-gray-400">Платформа</div>
+            <div>{platform}</div>
+
+            <div className="text-gray-400">Статус</div>
+            <div className="text-fuchsia-900 font-bold">
+              {isCompleted ? "Завершён" : `Продолжение ${continuation}`}
+            </div>
+          </div>
         </div>
-        <div>
-          <ul className="space-y-4 ml-20">
-            <li>
-              <p>{season}</p>
-            </li>
-            <li>
-              <p>{episode}</p>
-            </li>
-            <li>
-              <p>{country}</p>
-            </li>
-            <li>
-              <p>{style}</p>
-            </li>
-            <li>
-              <p>{yers}</p>
-            </li>
-            <li>
-              <p>{yers2}</p>
-            </li>
-            <li>
-              <p>{platform}</p>
-            </li>
-            <li>
-              <p className="text-fuchsia-900 font-bold">{continuation}</p>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="flex ml-20 font-extrabold mb-2">Трейлер</p>
+
+        <div className="ml-10">
+          <p className="font-extrabold mb-2">Трейлер</p>
           <iframe
             className="trailer"
             src={`https://www.youtube.com/embed/${trailerId}?amp`}
@@ -87,20 +79,28 @@ export function MovieComments({
             allowFullScreen
           />
           <a
-            className="flex ml-20 mt-5 font-extrabold absolute"
+            className="block mt-5 font-extrabold"
             href={`https://www.kinopoisk.ru/series/${kinopoisk}/`}
             target="_blank"
+            rel="noopener noreferrer"
           >
             Кинопоиск🔗
           </a>
         </div>
       </div>
-      <div>
+
+      <div className="mt-10">
         <p className="flex m-10 text-2xl font-extrabold">Рейтинг сериала</p>
-        <p className="flex ml-10 text-gray-400 font-sans">IMDb: {rating}</p>
-        <p className="flex ml-10 text-gray-400 font-sans">
-          Кинопоиск: {rating2}
-        </p>
+        <div className="flex ml-10 gap-10">
+          <div className="flex items-center gap-2">
+            <span className="text-blue-500 font-bold">IMDb:</span>
+            <span className="text-gray-400">{rating}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-orange-500 font-bold">Кинопоиск:</span>
+            <span className="text-gray-400">{rating2}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

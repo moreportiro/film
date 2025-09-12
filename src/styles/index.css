@@ -86,7 +86,7 @@ body {
 }
 
 .image {
-  max-width: 200px;
+  width: 100%;
   height: auto;
   object-fit: cover;
   cursor: pointer;
@@ -99,6 +99,10 @@ body {
   transform: translateY(5px);
   box-shadow: 1px 1px 20px #000;
   transition: 0.3s;
+}
+.image img {
+  border: none;
+  border-radius: 10px;
 }
 
 .imaged {
@@ -116,11 +120,10 @@ body {
   object-fit: cover;
   border: 0;
   border-radius: 10px;
-  margin-left: 80px;
   box-shadow: 1px 1px 10px black;
 }
 
-input {
+.input {
   border-width: 2px;
   border-radius: 5px;
   border-color: purple;
@@ -131,11 +134,11 @@ input {
   transition: 0.3s;
   box-shadow: 1px 1px 10px black;
 }
-input:hover {
+.input:hover {
   box-shadow: 1px 1px 10px black;
   transition: 0.3s;
 }
-input:focus {
+.input:focus {
   box-shadow: 1px 1px 10px black;
   transition: 0.3s;
   transform: scale3d(1.1, 1.1, 1.1);
@@ -152,16 +155,23 @@ select {
   transition: 0.3s;
   box-shadow: 1px 1px 10px black;
   cursor: pointer;
-  width: 200px;
+  width: 205px;
   height: 30px;
 }
-select:optional {
+option {
   background-color: white;
   color: #000;
-  font-weight: bold;
   &:where(.dark, .dark *) {
     color: white;
     background-color: #212121;
+  }
+}
+option:hover {
+  background-color: white;
+  color: #000;
+  &:where(.dark, .dark *) {
+    color: rgb(0, 0, 0);
+    background-color: purple;
   }
 }
 
@@ -171,6 +181,51 @@ label {
   margin-bottom: 3px;
   display: flex;
 }
+
+.form-group.relative {
+  position: relative;
+}
+
+.dropdown-trigger {
+  border: 2px solid purple;
+  color: gray;
+  padding-left: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #212121;
+  transition: 0.3s;
+  box-shadow: 1px 1px 10px black;
+  max-width: 205px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #212121;
+  border: 2px solid purple;
+  border-radius: 5px;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.checkbox-label {
+  display: block;
+  cursor: pointer;
+  padding-left: 5px;
+}
+
+.checkbox-label:hover {
+  background-color: purple;
+}
+
+.checkbox-label input {
+  margin-right: 8px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -178,7 +233,7 @@ label {
   background: #212121;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: purple;
+  background-color: #59168b;
   border-radius: 4px;
 }
 input::-webkit-inner-spin-button {

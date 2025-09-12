@@ -1,19 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { MOVIES } from "./movies.data";
 import { useDebounce } from "../../hooks/useDebounce";
-import { useTheme } from "../../hooks/useTheme";
 import MovieCard from "./MovieCard";
-import { AdminPanel } from "../../components/AdminPanel";
-import { Modal } from "../../components/Modal";
 import { fetchJSONP } from "../../services/fetchJSONP";
+import { NavBar } from "./NavBar";
 
 export function Home() {
-  const { theme, toggleTheme } = useTheme();
   const [searhTerm, setSearchTerm] = useState("");
   const [moviesData, setMoviesData] = useState([MOVIES]);
   const [loading, setLoading] = useState(true);
   const debouncedSearch = useDebounce(searhTerm, 500);
-  const [isAdmin, setAdmin] = useState();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // загрузка данных после добавления фильма
@@ -73,52 +69,24 @@ export function Home() {
 
   return (
     <div>
-      {/* поиск (надо вынести+фильтр) */}
-      <div className="flex justify-center items-center">
-        <input
-          type="search"
-          value={searhTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
-          placeholder="Поиск..."
-        />
-      </div>
-      {/* смена темы */}
-      <div className="flex justify-end items-center">
-        <button onClick={toggleTheme} className="btn">
-          {theme === "dark" ? "🌑" : "☀️"}
-        </button>
-      </div>
-      {/* админ панель */}
-      <div>
-        {isAdmin && (
-          <Modal onClose={() => setAdmin(false)}>
-            <AdminPanel
-              onSuccess={() => setRefreshTrigger((prev) => prev + 1)}
-            />
-          </Modal>
-        )}
-        <button
-          className="btn2"
-          onClick={() => {
-            setAdmin(true);
-          }}
-        >
-          +
-        </button>
-      </div>
+      <NavBar
+        onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
+        searchTerm={searhTerm}
+        setSearchTerm={setSearchTerm}
+      />
       {/* вывод платформ с их фильмами */}
       {platforms.map((platform) => (
         <div key={platform}>
-          <h2 className="text-3xl font-extrabold flex justify-center mb-10 mt-10">
+          <h2 className="text-3xl font-extrabold flex justify-center mb-5 mt-10">
             {platform}
           </h2>
 
           {/* фильмы текущей платформы */}
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-wrap justify-center items-center gap-6">
             {moviesByPlatform[platform].map((movie) => (
-              <MovieCard key={movie.name || Math.random()} movie={movie} />
+              <div className="flex justify-center">
+                <MovieCard key={movie.kinopoisk} movie={movie} />
+              </div>
             ))}
           </div>
         </div>

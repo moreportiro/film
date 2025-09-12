@@ -9,7 +9,7 @@ export function Routers() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/movie/:id" element={<MovieDetails />} />
+          <Route path="/movie/:kinopoiskId" element={<MovieDetails />} />
         </Route>
       </Routes>
     </Router>

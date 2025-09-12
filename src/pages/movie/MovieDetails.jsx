@@ -9,7 +9,7 @@ const LazyMovieComments = lazy(() =>
 );
 
 export function MovieDetails() {
-  const { id } = useParams();
+  const { kinopoiskId } = useParams();
   const [moviesData, setMoviesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,6 +20,7 @@ export function MovieDetails() {
         const url =
           "https://script.google.com/macros/s/AKfycbxoG96rnSRxfg4rOuBzXGXpMYaWaJYfpZSifG9hgrLWnXFfcQ7FkPuxQ7Rjg6fukSwU/exec";
         const data = await fetchJSONP(url, "handleMoviesData", 3); // 3 попытки
+
         setMoviesData(data);
       } catch (error) {
         console.error("Ошибка загрузки данных:", error);
@@ -32,9 +33,32 @@ export function MovieDetails() {
     loadMovies();
   }, []);
 
+  const formatRating = (rating) => {
+    if (typeof rating === "string") {
+      return rating.replace(",", ".");
+    }
+    return rating;
+  };
+
   const movie = useMemo(() => {
-    return moviesData.find((movie) => movie.trailerId === id);
-  }, [id, moviesData]);
+    if (!moviesData.length) return null;
+
+    const searchId = parseInt(kinopoiskId, 10);
+    const foundMovie = moviesData.find((movie) => {
+      const movieId = parseInt(movie.kinopoisk, 10);
+      return movieId === searchId;
+    });
+
+    if (foundMovie) {
+      return {
+        ...foundMovie,
+        rating: formatRating(foundMovie.rating),
+        rating2: formatRating(foundMovie.rating2),
+      };
+    }
+
+    return null;
+  }, [kinopoiskId, moviesData]);
 
   if (loading) {
     return <div>Загрузка данных...</div>;
