@@ -14,7 +14,7 @@ export function Modal({ children, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
-      <div className="relative bg-white dark:bg-[#212121] text-black dark:text-white rounded-2xl animate-fadeIn p-5">
+      <div className="relative bg-[#fdf4e3] dark:bg-[#212121] rounded-2xl animate-fadeIn p-5">
         <button
           onClick={onClose}
           className="absolute top-1 right-2 text-black dark:text-white hover:text-fuchsia-900 transition"

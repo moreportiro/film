@@ -152,40 +152,39 @@ export function MovieForm({ onSubmit, onCancel }) {
     <form onSubmit={handleFormSubmit}>
       <ul className="flex">
         <li className="mr-15">
-          <label>Название</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
-              placeholder="ru"
+              placeholder="Название"
+              className="textInput"
             />
           </div>
-          <label>Оригинальное название</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="text"
               name="nameorig"
               value={formData.nameorig}
               onChange={handleChange}
-              placeholder="en"
+              placeholder="Оригинальное название"
+              className="textInput"
             />
           </div>
-          <label>Постер</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="url"
               name="image"
               value={formData.image}
               onChange={handleChange}
               required
-              placeholder="URL"
+              placeholder="Постер https://"
+              className="textInput"
             />
           </div>
-          <label>Рейтинг IMDb</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="number"
               step="0.1"
@@ -195,11 +194,11 @@ export function MovieForm({ onSubmit, onCancel }) {
               value={formData.rating}
               onChange={handleChange}
               required
-              placeholder="0.0"
+              placeholder="Рейтинг IMDb"
+              className="textInput"
             />
           </div>
-          <label>Рейтинг Кинопоиск</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="number"
               step="0.1"
@@ -209,42 +208,93 @@ export function MovieForm({ onSubmit, onCancel }) {
               value={formData.rating2}
               onChange={handleChange}
               required
-              placeholder="0.0"
+              placeholder="Рейтинг Кинопоиск"
+              className="textInput"
             />
           </div>
-          <label>Трейлер YouTube</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="text"
               name="trailerId"
               value={formData.trailerId}
               onChange={handleChange}
               required
-              placeholder="emded/. . .?si="
+              placeholder="YouTube трейлер"
+              className="textInput"
             />
           </div>
-          <label>ID Кинопоиска</label>
-          <div className="form-group">
+          <div className="input">
             <input
               type="number"
               name="kinopoisk"
               value={formData.kinopoisk}
               onChange={handleChange}
-              placeholder="ID"
+              placeholder="ID Кинопоиск"
+              required
+              className="textInput"
+            />
+          </div>
+          <div className="input">
+            <input
+              type="number"
+              name="season"
+              value={formData.season}
+              onChange={handleChange}
+              min="0"
+              placeholder="Сезон"
+              className="textInput"
+              pattern="[0-9]{2}"
               required
             />
           </div>
+          <div className="input">
+            <input
+              type="number"
+              name="episode"
+              value={formData.episode}
+              onChange={handleChange}
+              pattern="[0-9]{2}"
+              placeholder="Серия"
+              required
+              className="textInput"
+            />
+          </div>
+          <div className="input">
+            <input
+              type="text"
+              name="yers"
+              value={formData.yers}
+              onInput={handleYearInput}
+              required
+              placeholder="Год производства"
+              pattern="[0-9]{4}"
+              className="textInput"
+            />
+          </div>
+          {showYearField && (
+            <div className="input">
+              <input
+                type="text"
+                name="yers2"
+                value={formData.yers2}
+                onInput={handleYearInput}
+                required={showYearField}
+                placeholder="Год завершения"
+                pattern="[0-9]{4}"
+                className="textInput"
+              />
+            </div>
+          )}
         </li>
         <li>
-          <label>Статус</label>
-          <div className="form-group">
+          <div className="relative mt-5">
             <select
               name="continuation"
               value={formData.continuation}
               onChange={handleContinuationChange}
               required
             >
-              <option value="">Выберите...</option>
+              <option value="">Статус</option>
               <option value="Завершён">Завершён</option>
               <option value="2025">2025</option>
               <option value="2026">2026</option>
@@ -252,65 +302,14 @@ export function MovieForm({ onSubmit, onCancel }) {
               <option value="2027">2028</option>
             </select>
           </div>
-          {showYearField && (
-            <>
-              <label>Год завершения</label>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="yers2"
-                  value={formData.yers2}
-                  onInput={handleYearInput}
-                  required={showYearField}
-                  placeholder="2024"
-                  pattern="[0-9]{4}"
-                />
-              </div>
-            </>
-          )}
-          <label>Год создания</label>
-          <div className="form-group">
-            <input
-              type="text"
-              name="yers"
-              value={formData.yers}
-              onInput={handleYearInput}
-              required
-              placeholder="2025"
-              pattern="[0-9]{4}"
-            />
-          </div>
-          <label>Сезон</label>
-          <div className="form-group">
-            <input
-              type="number"
-              name="season"
-              value={formData.season}
-              onChange={handleChange}
-              min="0"
-              placeholder="0"
-            />
-          </div>
-          <label>Серия</label>
-          <div className="form-group">
-            <input
-              type="number"
-              name="episode"
-              value={formData.episode}
-              onChange={handleChange}
-              min="0"
-              placeholder="0"
-            />
-          </div>
-          <label>Страна</label>
-          <div className="form-group relative">
+          <div className="relative mt-5">
             <div
               className="dropdown-trigger"
               onClick={() => setShowCountryDropdown(!showCountryDropdown)}
             >
               {formData.country.length > 0
                 ? formData.country.join(", ")
-                : "Выберите страны"}
+                : "Страна"}
             </div>
             {showCountryDropdown && (
               <div className="dropdown-menu">
@@ -327,15 +326,12 @@ export function MovieForm({ onSubmit, onCancel }) {
               </div>
             )}
           </div>
-          <label>Жанр</label>
-          <div className="form-group relative">
+          <div className="relative mt-5">
             <div
               className="dropdown-trigger"
               onClick={() => setShowGenreDropdown(!showGenreDropdown)}
             >
-              {formData.style.length > 0
-                ? formData.style.join(", ")
-                : "Выберите жанры"}
+              {formData.style.length > 0 ? formData.style.join(", ") : "Жанр"}
             </div>
             {showGenreDropdown && (
               <div className="dropdown-menu">
@@ -352,26 +348,40 @@ export function MovieForm({ onSubmit, onCancel }) {
               </div>
             )}
           </div>
+          <div className="flex justify-center items-center mt-5">
+            <select
+              name="platform"
+              value={formData.platform}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Платформа</option>
+              {platformsList.map((platform) => (
+                <option key={platform} value={platform}>
+                  {platform}
+                </option>
+              ))}
+            </select>
+          </div>
         </li>
       </ul>
+
       <div className="flex justify-center items-center mt-5">
-        <select
-          name="platform"
-          value={formData.platform}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Платформа</option>
-          {platformsList.map((platform) => (
-            <option key={platform} value={platform}>
-              {platform}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex justify-center items-center mt-5">
-        <button type="submit" className="btn3">
-          ДОБАВИТЬ
+        <button type="submit" className="btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
+            ></path>
+          </svg>
+          <div className="font-extrabold mr-5">Загрузить</div>
         </button>
       </div>
     </form>

@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 
 function MovieCard({ movie }) {
   const { image, name } = movie;
-  const continuation = movie.continuation || "";
-  const isCompleted =
-    typeof continuation === "string" && continuation.includes("Завершён");
   return (
-    <div className="image w-full max-w-[200px]">
+    <div>
       {/* картинка */}
       <Link to={`/movie/${movie.kinopoisk}`}>
-        <div className="flex justify-end">
-          <div className="absolute opacity-30">{isCompleted ? "🔴" : "🟢"}</div>
-          <img src={image || "/placeholder-image.jpg"} alt={name} />
-        </div>
+        <img
+          src={
+            image ||
+            "https://img.icons8.com/?size=100&id=kPZyzOd83PP0&format=png&color=59168b"
+          }
+          alt={name}
+          className="image"
+        />
       </Link>
     </div>
   );

@@ -15,7 +15,6 @@ export function AdminPanel({ onSuccess }) {
       );
 
       if (response.ok) {
-        alert("Фильм успешно добавлен!");
         if (onSuccess) {
           onSuccess();
         }

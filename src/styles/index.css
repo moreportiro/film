@@ -2,6 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Modal */
 @layer utilities {
   @keyframes fadeIn {
     from {
@@ -19,14 +20,13 @@
   }
 }
 
+/* основа */
 :root {
   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: dark;
-  color: white;
-  background-color: black;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,60 +34,106 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: purple;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-a:hover {
-  color: rgb(255, 0, 255);
-}
-
 body {
-  margin: 0;
-  min-width: 320;
-  background-color: black;
-  color: white;
+  background-color: #fdf4e3;
+  color: black;
+  &:where(.dark, .dark *) {
+    color: #fdf4e3;
+    background-color: #212121;
+  }
 }
 
-.btn {
-  font-size: 30px;
-  cursor: pointer;
-  transition: 0.3s;
+/* Loading */
+.card {
+  padding: 1rem 2rem;
+  border-radius: 1.25rem;
 }
-.btn:hover {
-  transform: scale3d(1.3, 1.3, 1.3);
-  transition: 0.3s;
+.loader {
+  color: rgb(124, 124, 124);
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 40px;
+  padding: 10px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 8px;
 }
 
-.btn2 {
+.words {
+  overflow: hidden;
+  position: relative;
+}
+.words::after {
+  content: "";
   position: absolute;
-  font-size: 30px;
-  color: purple;
-  text-decoration: none;
-  transition: color 0.3s;
-  cursor: pointer;
-}
-.btn2:hover {
-  color: rgb(255, 0, 255);
-  transform: scale3d(1.3, 1.3, 1.3);
-  transition: 0.3s;
+  inset: 0;
+  background: linear-gradient(
+    var(--bg-color) 10%,
+    transparent 30%,
+    transparent 70%,
+    var(--bg-color) 90%
+  );
+  z-index: 20;
 }
 
-.btn3 {
-  text-decoration: none;
-  transition: color 0.3s;
-  cursor: pointer;
-  font-weight: bold;
-}
-.btn3:hover {
-  color: purple;
-  transition: 0.3s;
+.word {
+  display: block;
+  height: 100%;
+  padding-left: 6px;
+  color: #956afa;
+  animation: spin_4991 4s infinite;
 }
 
+@keyframes spin_4991 {
+  10% {
+    -webkit-transform: translateY(-102%);
+    transform: translateY(-102%);
+  }
+
+  25% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
+
+  35% {
+    -webkit-transform: translateY(-202%);
+    transform: translateY(-202%);
+  }
+
+  50% {
+    -webkit-transform: translateY(-200%);
+    transform: translateY(-200%);
+  }
+
+  60% {
+    -webkit-transform: translateY(-302%);
+    transform: translateY(-302%);
+  }
+
+  75% {
+    -webkit-transform: translateY(-300%);
+    transform: translateY(-300%);
+  }
+
+  85% {
+    -webkit-transform: translateY(-402%);
+    transform: translateY(-402%);
+  }
+
+  100% {
+    -webkit-transform: translateY(-400%);
+    transform: translateY(-400%);
+  }
+}
+
+/* MovieCard */
 .image {
-  width: 100%;
-  height: auto;
+  max-width: 200px;
+  height: 100%;
   object-fit: cover;
   cursor: pointer;
   transition: 0.3s;
@@ -105,15 +151,17 @@ body {
   border-radius: 10px;
 }
 
+/* MovieDetails img */
 .imaged {
   max-width: 400px;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   border: none;
   border-radius: 10px;
-  box-shadow: 1px 1px 10px purple;
+  box-shadow: 1px 1px 20px #000;
 }
 
+/* MovieDetails trailer */
 .trailer {
   width: 400px;
   height: 200px;
@@ -123,31 +171,266 @@ body {
   box-shadow: 1px 1px 10px black;
 }
 
+/* MovieComments btn */
+.btn2 {
+  background: #59168b;
+  color: #fdf4e3;
+  font-family: inherit;
+  padding: 0.35em;
+  padding-left: 1.2em;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 0.9em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #714da6;
+  overflow: hidden;
+  position: relative;
+  height: 2.8em;
+  padding-right: 3.3em;
+  cursor: pointer;
+}
+
+.btn2 .icon {
+  background: #fdf4e3;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #7b52b9;
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.btn2:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.btn2 .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #7b52b9;
+}
+
+.btn2:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.btn2:active .icon {
+  transform: scale(0.95);
+}
+
+/* MovieForm input */
 .input {
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: purple;
-  color: gray;
-  text-decoration: none;
+  position: relative;
+  width: 190px;
+  margin: 12px 5px;
+  --accent-color: #59168b;
+}
+.input:before {
+  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+}
+.input:before,
+.input:after {
+  content: "";
+  left: 0;
+  right: 0;
+  position: absolute;
+  pointer-events: none;
+  bottom: -1px;
+  z-index: 4;
+  width: 100%;
+}
+.input:focus-within:before {
+  border-bottom: 1px solid var(--accent-color);
+}
+.input:before {
+  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+}
+.input:focus-within:before {
+  border-bottom: 1px solid var(--accent-color);
+  transform: scaleX(1);
+}
+.input:focus-within:after {
+  border-bottom: 2px solid var(--accent-color);
+  transform: scaleX(1);
+}
+.input:after {
+  content: "";
+  transform: scaleX(0);
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  will-change: transform;
+  border-bottom: 2px solid var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+.input::placeholder {
+  transition: opacity 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  opacity: 1;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.582);
+}
+.input .textInput {
+  border-radius: 5px 5px 0px 0px;
+  box-shadow: 0px 2px 5px rgb(35 35 35 / 30%);
+  max-height: 36px;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 200ms;
+  transition-property: background-color;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px;
+  width: 100%;
+  border-left: none;
+  border-bottom: none;
+  border-right: none;
+}
+.input .textInput:focus,
+.input .textInput:active {
   outline: none;
+}
+.input:focus-within .textInput::placeholder {
+  opacity: 0;
+}
+
+/* MovieForm btn */
+.btn {
+  width: 10.5em;
+  height: 2.9em;
+  border: #59168b 0.2em solid;
+  border-radius: 11px;
+  text-align: right;
+  transition: all 0.6s ease;
+  justify-content: center;
+}
+.btn:hover {
+  background-color: #59168b;
+  cursor: pointer;
+}
+.btn svg {
+  width: 1.6em;
+  margin-left: 10px;
+  position: absolute;
+  display: flex;
+  transition: all 0.6s ease;
+}
+.btn:hover svg {
+  transform: translateX(5px);
+}
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* MoveForm select-checkbox */
+.dropdown-trigger {
+  border: 2px solid #59168b;
+  color: gray;
   padding-left: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #fdf4e3;
+  &:where(.dark, .dark *) {
+    background-color: #212121;
+  }
   transition: 0.3s;
   box-shadow: 1px 1px 10px black;
+  max-width: 205px;
 }
-.input:hover {
-  box-shadow: 1px 1px 10px black;
-  transition: 0.3s;
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fdf4e3;
+  &:where(.dark, .dark *) {
+    background-color: #212121;
+  }
+  border: 2px solid #59168b;
+  border-radius: 5px;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
 }
-.input:focus {
-  box-shadow: 1px 1px 10px black;
-  transition: 0.3s;
-  transform: scale3d(1.1, 1.1, 1.1);
+
+.checkbox-label {
+  display: block;
+  cursor: pointer;
+  padding-left: 5px;
+}
+
+.checkbox-label:hover {
+  background-color: #59168b;
+}
+
+.checkbox-label input {
+  margin-right: 8px;
+}
+
+/* NavBarFilter ResetBtn */
+.btn3 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+}
+.svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+.svgIcon path {
+  fill: #59168b;
+}
+.btn3:hover {
+  width: 140px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  align-items: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+}
+.btn3:hover .svgIcon {
+  width: 50px;
+  transition-duration: 0.3s;
+  transform: translateY(60%);
+}
+.btn3::before {
+  position: absolute;
+  top: -20px;
+  content: "Сбросить";
+  transition-duration: 0.3s;
+  font-size: 2px;
+}
+.btn3:hover::before {
+  font-size: 13px;
+  opacity: 1;
+  transform: translateY(30px);
+  transition-duration: 0.3s;
+}
+.btn3:active {
+  transform: scale(0.95);
+  transition-duration: 0.3s;
 }
 
 select {
   border-width: 2px;
   border-radius: 5px;
-  border-color: purple;
+  border-color: #59168b;
   color: gray;
   text-decoration: none;
   outline: none;
@@ -175,62 +458,9 @@ option:hover {
   }
 }
 
-label {
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 3px;
-  display: flex;
-}
-
-.form-group.relative {
-  position: relative;
-}
-
-.dropdown-trigger {
-  border: 2px solid purple;
-  color: gray;
-  padding-left: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #212121;
-  transition: 0.3s;
-  box-shadow: 1px 1px 10px black;
-  max-width: 205px;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #212121;
-  border: 2px solid purple;
-  border-radius: 5px;
-  border-top: none;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.checkbox-label {
-  display: block;
-  cursor: pointer;
-  padding-left: 5px;
-}
-
-.checkbox-label:hover {
-  background-color: purple;
-}
-
-.checkbox-label input {
-  margin-right: 8px;
-}
-
+/* webkit */
 ::-webkit-scrollbar {
   width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #212121;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #59168b;
